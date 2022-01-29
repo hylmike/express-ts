@@ -1,0 +1,11 @@
+{
+  "name": "express-ts",
+  "version": "1.0.0",
+  "description": "template for express with typescript/inverisify/winston/webpack",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Michael Hua",
+  "license": "ISC"
+}
