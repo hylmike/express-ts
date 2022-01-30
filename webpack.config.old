@@ -1,0 +1,91 @@
+const path = require("path");
+const fs = require("fs");
+const nodeExternals = require("webpack-node-externals");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
+const { NODE_ENV = "production" } = process.env;
+
+const entityConfig = {
+  entry: () => {
+    const files = fs.readdirSync(path.resolve(__dirname, 'src/entity'));
+    const entries = {};
+    files.forEach(file => {
+      entries[file.slice(0, -3)] = path.resolve(__dirname, 'src/entity', file);
+    });
+    return entries;
+  },
+  mode: NODE_ENV,
+  target: "node",
+  output: {
+    path: path.resolve(__dirname, "dist/entity"),
+    filename: "[name].js",
+    libraryTarget: 'commonjs',
+  },
+  resolve: {
+    extensions: [".ts", ".js"],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|js)?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-env", "@babel/preset-typescript"],
+            },
+          },
+          { loader: "ts-loader" },
+        ],
+      },
+    ],
+  },
+  devtool: process.env.NODE_ENV === "production" ? false : "inline-source-map",
+  //watch: NODE_ENV === 'development',
+  externals: [nodeExternals()],
+  plugins: [new CleanWebpackPlugin()],
+  optimization: {
+    minimize: false,
+  }
+};
+
+const mainConfig = {
+  entry: ["regenerator-runtime/runtime", "./src/index.ts"],
+  mode: NODE_ENV,
+  target: "node",
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "index.js",
+  },
+  resolve: {
+    extensions: [".ts", ".js"],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|js)?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-env", "@babel/preset-typescript"],
+            },
+          },
+          { loader: "ts-loader" },
+        ],
+      },
+    ],
+  },
+  devtool: process.env.NODE_ENV === "production" ? false : "inline-source-map",
+  //watch: NODE_ENV === 'development',
+  externals: [nodeExternals()],
+  plugins: [new CleanWebpackPlugin()],
+  optimization: {
+    minimize: false,
+  }
+};
+
+module.exports = [entityConfig, mainConfig];
+

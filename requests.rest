@@ -1,0 +1,32 @@
+POST http://localhost:4000/user/createuser
+Content-Type: application/json
+
+{
+  "username":"Danick",
+  "password":"54321",
+  "email":"Danick@yahoo.com"
+}
+
+###
+
+GET http://localhost:4000/user/all
+
+###
+
+POST http://localhost:4000/book/regbook
+Content-Type: application/json
+
+{
+  "title": "New Book 1",
+  "catogory": "Romance",
+  "description": "Book of a love story ...",
+  "userID": 1
+}
+
+###
+
+GET http://localhost:4000/book/get/1
+
+###
+
+GET http://localhost:4000/book/all
